@@ -4,24 +4,28 @@ const app = express();
 
 
 app.get('/posts/:id', (req, res) => {
-  const data = require('./data.json');
-  const post = data.posts.find((post) => post.id === parseInt(req.params.id));
- 
-  if (!post) {
-    return res.status(404).send('Post not found');
-  }
-  res.send(post);
+  fs.readFile('./data.json', 'utf8', (err, data) => {
+    if(err) throw err;
+    const posts = JSON.parse(data).posts;
+    const post = posts.find((post) => post.id === parseInt(req.params.id));
+    if(!post) res.status(404).send('Post not found');
+
+    res.send(post);
+
+  });
 });
 
-app.get('/users/:id', (req,res) =>{
-    const data = require('./data.json');
-    const user = data.users.find((user) => user.id === parseInt(req.params.id))
+app.get('/users/:id', (req, res) => {
+  fs.readFile('./data.json', 'utf8', (err, data) => {
+    if(err) throw err;
+    const users = JSON.parse(data).users;
+    const user = posts.find((user) => user.id === parseInt(req.params.id));
+    if(!post) res.status(404).send('user not found');
 
-    if(!user) {
-        return res.status(404).send('Post not found');
-    }
-    res.send(user);
-} );
+    res.send(post);
+
+  });
+});
 
 app.get('/posts', (req, res) => {
     fs.readFile('./data.json', 'utf8', (err, data) => {
